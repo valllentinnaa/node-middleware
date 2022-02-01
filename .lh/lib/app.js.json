@@ -1,0 +1,74 @@
+{
+    "sourceFile": "lib/app.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 14,
+            "patches": [
+                {
+                    "date": 1643705068184,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643705146843,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,16 @@\n-import express from 'express';\n-import { port } from 'config';\n-import { logger, expressLogger, expressErrorLogger } from './logger';\n+import express from 'express'\n+import { port } from 'config'\n+import { logger, expressLogger, expressErrorLogger } from './logger'\n \n-const app = express();\n+const app = express()\n \n-app.use(expressLogger);\n-require('./middleware/express').default(app);\n-require('./routes').default(app);\n-app.use(expressErrorLogger);\n+app.use(expressLogger)\n+require('./middleware/express').default(app)\n+require('./routes').default(app)\n+app.use(expressErrorLogger)\n \n-app.listen(port, () => {\n-  logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n-});\n+// app.listen(port, () => {\n+//   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n+// });\n \n-module.exports = app;\n+module.exports = app\n"
+                },
+                {
+                    "date": 1643705174914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-// app.listen(port, () => {\n-//   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n-// });\n+app.listen(port, () => {\n+  logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n+});\n \n module.exports = app\n"
+                },
+                {
+                    "date": 1643705184934,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n+\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705193073,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-\n+process.env.\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705200201,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-process.env.\n+process.env.NODE_ENV\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705205887,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-process.env.NODE_ENV\n+process.env.NODE_ENV === 'test'\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705211948,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-process.env.NODE_ENV === 'test'\n+\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705217983,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-\n+process.env.NODE_ENV === 'test' ||\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705245653,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-process.env.NODE_ENV === 'test' ||\n+ ||\n app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n"
+                },
+                {
+                    "date": 1643705250786,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,10 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n- ||\n-app.listen(port, () => {\n+\n+process.env.NODE_ENV === 'test'app.listen(port, () => {\n   logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n });\n \n module.exports = app\n"
+                },
+                {
+                    "date": 1643705259379,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,12 +6,12 @@\n \n app.use(expressLogger)\n require('./middleware/express').default(app)\n require('./routes').default(app)\n-app.use(expressErrorLogger)\n+app.use(expressErrorLogger)(process.env.NODE_ENV === 'test') &&\n+  app.listen(port, () => {\n+    logger.info(\n+      `Express server listening on port ${port} in ${app.get('env')} mode`\n+    )\n+  })\n \n-\n-process.env.NODE_ENV === 'test'app.listen(port, () => {\n-  logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n-});\n-\n module.exports = app\n"
+                },
+                {
+                    "date": 1643705264923,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,11 @@\n \n app.use(expressLogger)\n require('./middleware/express').default(app)\n require('./routes').default(app)\n-app.use(expressErrorLogger)(process.env.NODE_ENV === 'test') &&\n+app.use(expressErrorLogger)\n+\n+!(process.env.NODE_ENV === 'test') &&\n   app.listen(port, () => {\n     logger.info(\n       `Express server listening on port ${port} in ${app.get('env')} mode`\n     )\n"
+                },
+                {
+                    "date": 1643705272883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-!(process.env.NODE_ENV === 'test') &&\n+process.env.NODE_ENV === 'test') &&\n   app.listen(port, () => {\n     logger.info(\n       `Express server listening on port ${port} in ${app.get('env')} mode`\n     )\n"
+                },
+                {
+                    "date": 1643705278703,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n require('./middleware/express').default(app)\n require('./routes').default(app)\n app.use(expressErrorLogger)\n \n-process.env.NODE_ENV === 'test') &&\n+process.env.NODE_ENV !== 'test' &&\n   app.listen(port, () => {\n     logger.info(\n       `Express server listening on port ${port} in ${app.get('env')} mode`\n     )\n"
+                }
+            ],
+            "date": 1643705068184,
+            "name": "Commit-0",
+            "content": "import express from 'express';\nimport { port } from 'config';\nimport { logger, expressLogger, expressErrorLogger } from './logger';\n\nconst app = express();\n\napp.use(expressLogger);\nrequire('./middleware/express').default(app);\nrequire('./routes').default(app);\napp.use(expressErrorLogger);\n\napp.listen(port, () => {\n  logger.info(`Express server listening on port ${port} in ${app.get('env')} mode`);\n});\n\nmodule.exports = app;\n"
+        }
+    ]
+}

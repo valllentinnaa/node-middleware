@@ -1,0 +1,262 @@
+{
+    "sourceFile": "lib/utils/checkAgainstsRules.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 61,
+            "patches": [
+                {
+                    "date": 1643664857435,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643664871072,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,28 +1,30 @@\n-Object.keys(requestRules).forEach(rule => {\n-  if (!payload.hasOwnProperty(rule)) {\n-    return res\n-      .status(400)\n-      .json({ message: 'All required parameters should be present' })\n-  }\n-})\n+export const checkAgainstRules = () => {\n+  Object.keys(requestRules).forEach(rule => {\n+    if (!payload.hasOwnProperty(rule)) {\n+      return res\n+        .status(400)\n+        .json({ message: 'All required parameters should be present' })\n+    }\n+  })\n \n-Object.keys(payload).map(parameter => {\n-  if (!requestRules.hasOwnProperty(parameter)) {\n-    return res\n-      .status(400)\n-      .json({ message: 'No extraneous parameters should be present!' })\n-  }\n+  Object.keys(payload).map(parameter => {\n+    if (!requestRules.hasOwnProperty(parameter)) {\n+      return res\n+        .status(400)\n+        .json({ message: 'No extraneous parameters should be present!' })\n+    }\n \n-  const typeChecker = {\n-    array: parameter => Array.isArray(parameter),\n-    integer: parameter => typeof parameter === number,\n-    string: parameter => typeof parameter === string,\n-    object: parameter => parameter.constructor === Object,\n-  }\n+    const typeChecker = {\n+      array: parameter => Array.isArray(parameter),\n+      integer: parameter => typeof parameter === number,\n+      string: parameter => typeof parameter === string,\n+      object: parameter => parameter.constructor === Object,\n+    }\n \n-  if (!typeChecker[requestRules[parameter].type](payload[parameter])) {\n-    return res\n-      .status(400)\n-      .json({ message: 'All parameter data types should be correct!' })\n-  }\n-})\n+    if (!typeChecker[requestRules[parameter].type](payload[parameter])) {\n+      return res\n+        .status(400)\n+        .json({ message: 'All parameter data types should be correct!' })\n+    }\n+  })\n+}\n"
+                },
+                {
+                    "date": 1643664876662,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = () => {\n+export const checkAgainstRules = (res) => {\n   Object.keys(requestRules).forEach(rule => {\n     if (!payload.hasOwnProperty(rule)) {\n       return res\n         .status(400)\n"
+                },
+                {
+                    "date": 1643664883421,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = (res) => {\n+export const checkAgainstRules = (payload, res) => {\n   Object.keys(requestRules).forEach(rule => {\n     if (!payload.hasOwnProperty(rule)) {\n       return res\n         .status(400)\n"
+                },
+                {
+                    "date": 1643664888747,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = (payload, res) => {\n+export const checkAgainstRules = (payload, requestRules, res) => {\n   Object.keys(requestRules).forEach(rule => {\n     if (!payload.hasOwnProperty(rule)) {\n       return res\n         .status(400)\n"
+                },
+                {
+                    "date": 1643664917025,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,4 +27,6 @@\n         .json({ message: 'All parameter data types should be correct!' })\n     }\n   })\n }\n+\n+export const type\n"
+                },
+                {
+                    "date": 1643664923248,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,6 +27,4 @@\n         .json({ message: 'All parameter data types should be correct!' })\n     }\n   })\n }\n-\n-export const type\n"
+                },
+                {
+                    "date": 1643665555353,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n         .json({ message: 'All required parameters should be present' })\n     }\n   })\n \n-  Object.keys(payload).map(parameter => {\n+  Object.keys(payload).forEach(parameter => {\n     if (!requestRules.hasOwnProperty(parameter)) {\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n"
+                },
+                {
+                    "date": 1643665659115,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = (payload, requestRules, res) => {\n+export const checkAgainstRules = (payload, ruleName, res) => {\n   Object.keys(requestRules).forEach(rule => {\n     if (!payload.hasOwnProperty(rule)) {\n       return res\n         .status(400)\n"
+                },
+                {
+                    "date": 1643665669960,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,7 @@\n-export const checkAgainstRules = (payload, ruleName, res) => {\n+export const checkAgainstRules = (payload, ruleName, ruleType res) => {\n   Object.keys(requestRules).forEach(rule => {\n-    if (!payload.hasOwnProperty(rule)) {\n-      return res\n-        .status(400)\n-        .json({ message: 'All required parameters should be present' })\n-    }\n+   \n   })\n \n   Object.keys(payload).forEach(parameter => {\n     if (!requestRules.hasOwnProperty(parameter)) {\n"
+                },
+                {
+                    "date": 1643665676745,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,10 @@\n export const checkAgainstRules = (payload, ruleName, ruleType res) => {\n-  Object.keys(requestRules).forEach(rule => {\n-   \n-  })\n+  if (!payload.hasOwnProperty(ruleName)) {\n+      return res\n+        .status(400)\n+        .json({ message: 'All required parameters should be present' })\n+    }\n \n   Object.keys(payload).forEach(parameter => {\n     if (!requestRules.hasOwnProperty(parameter)) {\n       return res\n"
+                },
+                {
+                    "date": 1643665696257,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n         .json({ message: 'All required parameters should be present' })\n     }\n \n   Object.keys(payload).forEach(parameter => {\n-    if (!requestRules.hasOwnProperty(parameter)) {\n+    if (!ruleName ===) {\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n"
+                },
+                {
+                    "date": 1643665701424,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n         .json({ message: 'All required parameters should be present' })\n     }\n \n   Object.keys(payload).forEach(parameter => {\n-    if (!ruleName ===) {\n+    if (!ruleName === parameter) {\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n"
+                },
+                {
+                    "date": 1643665725697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n         .json({ message: 'All required parameters should be present' })\n     }\n \n   Object.keys(payload).forEach(parameter => {\n-    if (!ruleName === parameter) {\n+    if (!(ruleName === parameter)) {\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n@@ -18,9 +18,9 @@\n       string: parameter => typeof parameter === string,\n       object: parameter => parameter.constructor === Object,\n     }\n \n-    if (!typeChecker[requestRules[parameter].type](payload[parameter])) {\n+    if (!typeChecker[ruleType](payload[parameter])) {\n       return res\n         .status(400)\n         .json({ message: 'All parameter data types should be correct!' })\n     }\n"
+                },
+                {
+                    "date": 1643665737971,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = (payload, ruleName, ruleType res) => {\n+export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666254792,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n+  console.log('')\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666262847,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n-  console.log('')\n+  console.log('****************************')\n+  console.log('****************************')\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666272312,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n   console.log('****************************')\n-  console.log('****************************')\n+  console.log('payload')\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666280203,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,9 @@\n export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n   console.log('****************************')\n-  console.log('payload')\n+  console.log('payload', payload)\n+  console.log('****************************')\n+  console.log('payload', payload)\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666287285,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,11 @@\n export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n   console.log('****************************')\n   console.log('payload', payload)\n   console.log('****************************')\n-  console.log('payload', payload)\n+  console.log('ruleName', ruleName)\n+  console.log('****************************')\n+  console.log('ruleName', ruleName)\n   if (!payload.hasOwnProperty(ruleName)) {\n       return res\n         .status(400)\n         .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666331738,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,14 +3,14 @@\n   console.log('payload', payload)\n   console.log('****************************')\n   console.log('ruleName', ruleName)\n   console.log('****************************')\n-  console.log('ruleName', ruleName)\n+  console.log('ruleType', ruleType)\n   if (!payload.hasOwnProperty(ruleName)) {\n-      return res\n-        .status(400)\n-        .json({ message: 'All required parameters should be present' })\n-    }\n+    return res\n+      .status(400)\n+      .json({ message: 'All required parameters should be present' })\n+  }\n \n   Object.keys(payload).forEach(parameter => {\n     if (!(ruleName === parameter)) {\n       return res\n@@ -20,9 +20,9 @@\n \n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === number,\n-      string: parameter => typeof parameter === string,\n+      string: parameter => typeof parameter === 'string',\n       object: parameter => parameter.constructor === Object,\n     }\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n"
+                },
+                {
+                    "date": 1643666344079,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     }\n \n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === number,\n+      integer: parameter => typeof parameter === num,\n       string: parameter => typeof parameter === 'string',\n       object: parameter => parameter.constructor === Object,\n     }\n \n"
+                },
+                {
+                    "date": 1643666350359,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n     }\n \n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === num,\n+      integer: parameter => typeof parameter === 'number',\n       string: parameter => typeof parameter === 'string',\n       object: parameter => parameter.constructor === Object,\n     }\n \n"
+                },
+                {
+                    "date": 1643666673226,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,19 +16,6 @@\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n-\n-    const typeChecker = {\n-      array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === 'number',\n-      string: parameter => typeof parameter === 'string',\n-      object: parameter => parameter.constructor === Object,\n-    }\n-\n-    if (!typeChecker[ruleType](payload[parameter])) {\n-      return res\n-        .status(400)\n-        .json({ message: 'All parameter data types should be correct!' })\n-    }\n   })\n }\n"
+                },
+                {
+                    "date": 1643666735789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,20 @@\n   console.log('****************************')\n   console.log('ruleName', ruleName)\n   console.log('****************************')\n   console.log('ruleType', ruleType)\n+      const typeChecker = {\n+        array: parameter => Array.isArray(parameter),\n+        integer: parameter => typeof parameter === 'number',\n+        string: parameter => typeof parameter === 'string',\n+        object: parameter => parameter.constructor === Object,\n+      }\n+\n+      if (!typeChecker[ruleType](payload[parameter])) {\n+        return res\n+          .status(400)\n+          .json({ message: 'All parameter data types should be correct!' })\n+      }\n   if (!payload.hasOwnProperty(ruleName)) {\n     return res\n       .status(400)\n       .json({ message: 'All required parameters should be present' })\n"
+                },
+                {
+                    "date": 1643666741570,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,30 +4,27 @@\n   console.log('****************************')\n   console.log('ruleName', ruleName)\n   console.log('****************************')\n   console.log('ruleType', ruleType)\n-      const typeChecker = {\n-        array: parameter => Array.isArray(parameter),\n-        integer: parameter => typeof parameter === 'number',\n-        string: parameter => typeof parameter === 'string',\n-        object: parameter => parameter.constructor === Object,\n-      }\n-\n-      if (!typeChecker[ruleType](payload[parameter])) {\n-        return res\n-          .status(400)\n-          .json({ message: 'All parameter data types should be correct!' })\n-      }\n   if (!payload.hasOwnProperty(ruleName)) {\n     return res\n       .status(400)\n       .json({ message: 'All required parameters should be present' })\n   }\n \n   Object.keys(payload).forEach(parameter => {\n-    if (!(ruleName === parameter)) {\n+\n+\n+    const typeChecker = {\n+      array: parameter => Array.isArray(parameter),\n+      integer: parameter => typeof parameter === 'number',\n+      string: parameter => typeof parameter === 'string',\n+      object: parameter => parameter.constructor === Object,\n+    }\n+\n+    if (!typeChecker[ruleType](payload[parameter])) {\n       return res\n         .status(400)\n-        .json({ message: 'No extraneous parameters should be present!' })\n+        .json({ message: 'All parameter data types should be correct!' })\n     }\n   })\n }\n"
+                },
+                {
+                    "date": 1643666746674,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,17 +4,10 @@\n   console.log('****************************')\n   console.log('ruleName', ruleName)\n   console.log('****************************')\n   console.log('ruleType', ruleType)\n-  if (!payload.hasOwnProperty(ruleName)) {\n-    return res\n-      .status(400)\n-      .json({ message: 'All required parameters should be present' })\n-  }\n \n   Object.keys(payload).forEach(parameter => {\n-\n-\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === 'number',\n       string: parameter => typeof parameter === 'string',\n@@ -25,6 +18,12 @@\n       return res\n         .status(400)\n         .json({ message: 'All parameter data types should be correct!' })\n     }\n+\n+    if (!(ruleName === parameter)) {\n+      return res\n+        .status(400)\n+        .json({ message: 'No extraneous parameters should be present!' })\n+    }\n   })\n }\n"
+                },
+                {
+                    "date": 1643666765767,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n \n   Object.keys(payload).forEach(parameter => {\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === 'number',\n+      integer: parameter => typeof parameter === number',\n       string: parameter => typeof parameter === 'string',\n       object: parameter => parameter.constructor === Object,\n     }\n \n@@ -25,5 +25,11 @@\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n   })\n+\n+  if (!payload.hasOwnProperty(ruleName)) {\n+    return res\n+      .status(400)\n+      .json({ message: 'All required parameters should be present' })\n+  }\n }\n"
+                },
+                {
+                    "date": 1643666807449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,13 @@\n \n   Object.keys(payload).forEach(parameter => {\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === number',\n-      string: parameter => typeof parameter === 'string',\n+      integer: parameter => typeof parameter === number,\n+      string: parameter => {\n+\n+        typeof parameter === 'string'\n+      },\n       object: parameter => parameter.constructor === Object,\n     }\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n"
+                },
+                {
+                    "date": 1643666815507,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,10 @@\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n-\n-        typeof parameter === 'string'\n+console.log()\n+        return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n"
+                },
+                {
+                    "date": 1643666822146,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,9 @@\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n-console.log()\n+        console.log(typeof parameter === 'string')\n         return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n"
+                },
+                {
+                    "date": 1643666971475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,11 +17,9 @@\n       object: parameter => parameter.constructor === Object,\n     }\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n-      return res\n-        .status(400)\n-        .json({ message: 'All parameter data types should be correct!' })\n+      th({ message: 'All parameter data types should be correct!' })\n     }\n \n     if (!(ruleName === parameter)) {\n       return res\n"
+                },
+                {
+                    "date": 1643666976977,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,11 @@\n       object: parameter => parameter.constructor === Object,\n     }\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n-      th({ message: 'All parameter data types should be correct!' })\n+      throw new Error({\n+        message: 'All parameter data types should be correct!',\n+      })\n     }\n \n     if (!(ruleName === parameter)) {\n       return res\n"
+                },
+                {
+                    "date": 1643666982731,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,9 +19,9 @@\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error({\n         message: 'All parameter data types should be correct!',\n-      })\n+      )\n     }\n \n     if (!(ruleName === parameter)) {\n       return res\n"
+                },
+                {
+                    "date": 1643666991789,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,14 +17,13 @@\n       object: parameter => parameter.constructor === Object,\n     }\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n-      throw new Error({\n-        message: 'All parameter data types should be correct!',\n-      )\n+      throw new Error('All parameter data types should be correct!')\n     }\n \n     if (!(ruleName === parameter)) {\n+        throw new Error('All parameter data types should be correct!')\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n"
+                },
+                {
+                    "date": 1643666997948,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n       throw new Error('All parameter data types should be correct!')\n     }\n \n     if (!(ruleName === parameter)) {\n-        throw new Error('All parameter data types should be correct!')\n+        throw new Error('No extraneous parameters should be present!')\n       return res\n         .status(400)\n         .json({ message: 'No extraneous parameters should be present!' })\n     }\n"
+                },
+                {
+                    "date": 1643667006670,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,16 +21,14 @@\n       throw new Error('All parameter data types should be correct!')\n     }\n \n     if (!(ruleName === parameter)) {\n-        throw new Error('No extraneous parameters should be present!')\n-      return res\n-        .status(400)\n-        .json({ message: 'No extraneous parameters should be present!' })\n+      throw new Error('No extraneous parameters should be present!')\n     }\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n+    \n     return res\n       .status(400)\n       .json({ message: 'All required parameters should be present' })\n   }\n"
+                },
+                {
+                    "date": 1643667013861,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,9 @@\n     }\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n-    \n+      throw new Error('All required parameters should be present!')\n     return res\n       .status(400)\n       .json({ message: 'All required parameters should be present' })\n   }\n"
+                },
+                {
+                    "date": 1643667021916,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-export const checkAgainstRules = (payload, ruleName, ruleType, res) => {\n+export const checkAgainstRules = (payload, ruleName, ruleType) => {\n   console.log('****************************')\n   console.log('payload', payload)\n   console.log('****************************')\n   console.log('ruleName', ruleName)\n@@ -26,10 +26,7 @@\n     }\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n-      throw new Error('All required parameters should be present!')\n-    return res\n-      .status(400)\n-      .json({ message: 'All required parameters should be present' })\n+    throw new Error('All required parameters should be present!')\n   }\n }\n"
+                },
+                {
+                    "date": 1643667056349,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n+    console.log()\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n"
+                },
+                {
+                    "date": 1643667077481,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n       object: parameter => parameter.constructor === Object,\n     }\n \n     console.log()\n+    console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n"
+                },
+                {
+                    "date": 1643667083405,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,9 @@\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n-    console.log()\n+    console.log(typeChecker[ruleType])\n     console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n"
+                },
+                {
+                    "date": 1643667090898,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,9 @@\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n+    console.log(ruleType])\n     console.log(typeChecker[ruleType])\n     console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n"
+                },
+                {
+                    "date": 1643667097594,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,10 +16,11 @@\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n-    console.log(ruleType])\n+    console.log(ruleType)\n     console.log(typeChecker[ruleType])\n+    console.log(typeChecker[ruleType])\n     console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n"
+                },
+                {
+                    "date": 1643667110575,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n     }\n \n     console.log(ruleType)\n     console.log(typeChecker[ruleType])\n-    console.log(typeChecker[ruleType])\n+    console.log(payload[parameter])\n     console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n"
+                },
+                {
+                    "date": 1643667623934,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,9 @@\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n         console.log(typeof parameter === 'string')\n+        console.log(typeof parameter === 'string')\n         return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n"
+                },
+                {
+                    "date": 1643667629630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,10 @@\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n+        console.log('STRINGGGG')\n         console.log(typeof parameter === 'string')\n-        console.log(typeof parameter === 'string')\n         return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n"
+                },
+                {
+                    "date": 1643667649593,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n         console.log('STRINGGGG')\n         console.log(typeof parameter === 'string')\n-        return typeof parameter === 'string'\n+        return typeof parameter === string\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n"
+                },
+                {
+                    "date": 1643667674424,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n       integer: parameter => typeof parameter === number,\n       string: parameter => {\n         console.log('STRINGGGG')\n         console.log(typeof parameter === 'string')\n-        return typeof parameter === string\n+        return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n"
+                },
+                {
+                    "date": 1643667696094,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n \n   Object.keys(payload).forEach(parameter => {\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n-      integer: parameter => typeof parameter === number,\n+      integer: parameter => typeof parameter === 'number',\n       string: parameter => {\n         console.log('STRINGGGG')\n         console.log(typeof parameter === 'string')\n         return typeof parameter === 'string'\n"
+                },
+                {
+                    "date": 1643667832083,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,12 +17,8 @@\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n \n-    console.log(ruleType)\n-    console.log(typeChecker[ruleType])\n-    console.log(payload[parameter])\n-    console.log(typeChecker[ruleType](payload[parameter]))\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n"
+                },
+                {
+                    "date": 1643667838216,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,8 @@\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === 'number',\n       string: parameter => {\n-        console.log('STRINGGGG')\n-        console.log(typeof parameter === 'string')\n         return typeof parameter === 'string'\n       },\n       object: parameter => parameter.constructor === Object,\n     }\n"
+                },
+                {
+                    "date": 1643706340043,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,5 @@\n export const checkAgainstRules = (payload, ruleName, ruleType) => {\n-  console.log('****************************')\n-  console.log('payload', payload)\n-  console.log('****************************')\n-  console.log('ruleName', ruleName)\n-  console.log('****************************')\n-  console.log('ruleType', ruleType)\n-\n   Object.keys(payload).forEach(parameter => {\n     const typeChecker = {\n       array: parameter => Array.isArray(parameter),\n       integer: parameter => typeof parameter === 'number',\n@@ -19,8 +12,10 @@\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n+    console.log()\n+\n     if (!(ruleName === parameter)) {\n       throw new Error('No extraneous parameters should be present!')\n     }\n   })\n"
+                },
+                {
+                    "date": 1643706348227,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,10 @@\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n-    console.log()\n+    console.log(ruleName)\n+    console.log(ruleName)\n \n     if (!(ruleName === parameter)) {\n       throw new Error('No extraneous parameters should be present!')\n     }\n"
+                },
+                {
+                    "date": 1643706536153,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,10 @@\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n-    console.log(ruleName)\n-    console.log(ruleName)\n+    console.log('ruleName', parameter)\n+    console.log(parameter)\n \n     if (!(ruleName === parameter)) {\n       throw new Error('No extraneous parameters should be present!')\n     }\n"
+                },
+                {
+                    "date": 1643706541374,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n \n-    console.log('ruleName', parameter)\n+    console.log('ruleName', ruleName)\n     console.log(parameter)\n \n     if (!(ruleName === parameter)) {\n       throw new Error('No extraneous parameters should be present!')\n"
+                },
+                {
+                    "date": 1643706580080,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,11 @@\n       throw new Error('All parameter data types should be correct!')\n     }\n \n     console.log('ruleName', ruleName)\n-    console.log(parameter)\n+    console.log('parameter', parameter)\n \n-    if (!(ruleName === parameter)) {\n+    if (!(parameter)) {\n       throw new Error('No extraneous parameters should be present!')\n     }\n   })\n \n"
+                },
+                {
+                    "date": 1643706597954,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,12 +14,8 @@\n     }\n \n     console.log('ruleName', ruleName)\n     console.log('parameter', parameter)\n-\n-    if (!(parameter)) {\n-      throw new Error('No extraneous parameters should be present!')\n-    }\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n     throw new Error('All required parameters should be present!')\n"
+                },
+                {
+                    "date": 1643706614691,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,7 +17,11 @@\n     console.log('parameter', parameter)\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n+    throw new Error('No extraneous parameters should be present!')\n+  }\n+\n+  if (!payload.hasOwnProperty(ruleName)) {\n     throw new Error('All required parameters should be present!')\n   }\n }\n"
+                },
+                {
+                    "date": 1643706658324,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,14 +11,11 @@\n \n     if (!typeChecker[ruleType](payload[parameter])) {\n       throw new Error('All parameter data types should be correct!')\n     }\n-\n-    console.log('ruleName', ruleName)\n-    console.log('parameter', parameter)\n   })\n \n-  if (!payload.hasOwnProperty(ruleName)) {\n+  if (payload.hasOwnProperty(ruleName)) {\n     throw new Error('No extraneous parameters should be present!')\n   }\n \n   if (!payload.hasOwnProperty(ruleName)) {\n"
+                },
+                {
+                    "date": 1643706827868,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n       throw new Error('All parameter data types should be correct!')\n     }\n   })\n \n-  if (payload.hasOwnProperty(ruleName)) {\n+  if (!payload.hasOwnProperty(ruleName)) {\n     throw new Error('No extraneous parameters should be present!')\n   }\n \n   if (!payload.hasOwnProperty(ruleName)) {\n"
+                },
+                {
+                    "date": 1643707362073,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   })\n \n   if (!payload.hasOwnProperty(ruleName)) {\n     throw new Error(\n-      'All required parameters should be present!No extraneous parameters should be present!'\n+      'All required parameters should be present! No extraneous parameters should be present!'\n     )\n   }\n \n   if (!payload.hasOwnProperty(ruleName)) {\n"
+                }
+            ],
+            "date": 1643664857435,
+            "name": "Commit-0",
+            "content": "Object.keys(requestRules).forEach(rule => {\n  if (!payload.hasOwnProperty(rule)) {\n    return res\n      .status(400)\n      .json({ message: 'All required parameters should be present' })\n  }\n})\n\nObject.keys(payload).map(parameter => {\n  if (!requestRules.hasOwnProperty(parameter)) {\n    return res\n      .status(400)\n      .json({ message: 'No extraneous parameters should be present!' })\n  }\n\n  const typeChecker = {\n    array: parameter => Array.isArray(parameter),\n    integer: parameter => typeof parameter === number,\n    string: parameter => typeof parameter === string,\n    object: parameter => parameter.constructor === Object,\n  }\n\n  if (!typeChecker[requestRules[parameter].type](payload[parameter])) {\n    return res\n      .status(400)\n      .json({ message: 'All parameter data types should be correct!' })\n  }\n})\n"
+        }
+    ]
+}

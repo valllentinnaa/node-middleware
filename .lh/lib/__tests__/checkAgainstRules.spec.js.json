@@ -1,0 +1,118 @@
+{
+    "sourceFile": "lib/__tests__/checkAgainstRules.spec.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 25,
+            "patches": [
+                {
+                    "date": 1643668161484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643668212477,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,40 +1,51 @@\n-import { getOne, getMany, getRandom } from './questions.service'\n-import { mockQuestions, mockQuestionsBlind } from './questions.mock'\n-import { removeResultInfo } from './questions.utils'\n+import supertest from 'supertest'\n+import app from '../index'\n \n-jest.mock('./questions.store', () => ({\n-  getQuestions: jest.fn(() => mockQuestions),\n-}))\n+const request = supertest(app)\n \n-describe('Questions Module', () => {\n-  describe('getOne', () => {\n-    test('should return the first question', () => {\n-      expect(getOne(1)).toEqual(mockQuestionsBlind[0])\n+describe('E2E Tests (Responses Module)', () => {\n+  test('should return true if provided with correct answer and question', async done => {\n+    const res = await request.post('/responses/verify').send({\n+      questionId: 194983,\n+      userAnswer: 'piglet',\n     })\n+    expect(res.status).toBe(200)\n+    expect(res.body).toEqual({ isCorrect: true })\n+    done()\n+  })\n \n-    test('should throw an error if question does not exist', () => {\n-      expect(() => getOne(5)).toThrowError()\n+  test('should return false if provided with incorrect answer and question', async done => {\n+    const res = await request.post('/responses/verify').send({\n+      questionId: 194983,\n+      userAnswer: 'pork',\n     })\n+    expect(res.status).toBe(200)\n+    expect(res.body).toEqual({ isCorrect: false })\n+    done()\n   })\n \n-  describe('getMany', () => {\n-    test('should return all the questions', () => {\n-      expect(getMany()).toEqual(mockQuestionsBlind)\n+  test('should return error code if user answer isnt in question', async done => {\n+    const res = await request.post('/responses/verify').send({\n+      questionId: 194983,\n+      userAnswer: 'not_an_option',\n     })\n+    expect(res.status).toBe(400)\n+    done()\n   })\n \n-  describe('getRandom', () => {\n-    test('should return one question that exists in the store', () => {\n-      const randomQuestion = getRandom()\n-      expect(mockQuestionsBlind.find(q => q.id === randomQuestion.id)).toEqual(\n-        randomQuestion\n-      )\n+  test('should return error code if question is missing', async done => {\n+    const res = await request.post('/responses/verify').send({\n+      userAnswer: 'some_answer',\n     })\n+    expect(res.status).toBe(400)\n+    done()\n   })\n-})\n \n-describe('Questions Utils', () => {\n-  test('removeResultInfo', () => {\n-    expect(removeResultInfo(mockQuestions[0])).toEqual(mockQuestionsBlind[0])\n+  test('should return error code if userAnswer is missing', async done => {\n+    const res = await request.post('/responses/verify').send({\n+      questionId: 194983,\n+    })\n+    expect(res.status).toBe(400)\n+    done()\n   })\n })\n"
+                },
+                {
+                    "date": 1643668227032,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,9 @@\n import app from '../index'\n \n const request = supertest(app)\n \n-describe('E2E Tests (Responses Module)', () => {\n+describe('E2E Tests (Check Against Rules Module)', () => {\n   test('should return true if provided with correct answer and question', async done => {\n     const res = await request.post('/responses/verify').send({\n       questionId: 194983,\n       userAnswer: 'piglet',\n"
+                },
+                {
+                    "date": 1643668240312,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,10 +2,10 @@\n import app from '../index'\n \n const request = supertest(app)\n \n-describe('E2E Tests (Check Against Rules Module)', () => {\n-  test('should return true if provided with correct answer and question', async done => {\n+describe('E2E Tests (Check Against Rules Middleware)', () => {\n+  test('should return OK if payload is correct', async done => {\n     const res = await request.post('/responses/verify').send({\n       questionId: 194983,\n       userAnswer: 'piglet',\n     })\n"
+                },
+                {
+                    "date": 1643668247785,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async done => {\n-    const res = await request.post('/responses/verify').send({\n+    const res = await request.post('/api/account').send({\n       questionId: 194983,\n       userAnswer: 'piglet',\n     })\n     expect(res.status).toBe(200)\n"
+                },
+                {
+                    "date": 1643668274074,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async done => {\n-    const res = await request.post('/api/account').send({\n+    const res = await request.post('/api/account/profile').send({\n       questionId: 194983,\n       userAnswer: 'piglet',\n     })\n     expect(res.status).toBe(200)\n"
+                },
+                {
+                    "date": 1643668282342,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,10 +5,11 @@\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async done => {\n     const res = await request.post('/api/account/profile').send({\n-      questionId: 194983,\n-      userAnswer: 'piglet',\n+      name: 'string',\n+      job_title: 'string',\n+      photo_url: 'string',\n     })\n     expect(res.status).toBe(200)\n     expect(res.body).toEqual({ isCorrect: true })\n     done()\n"
+                },
+                {
+                    "date": 1643668287418,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async done => {\n-    const res = await request.post('/api/account/profile').send({\n+    const res = await request.put('/api/account/profile').send({\n       name: 'string',\n       job_title: 'string',\n       photo_url: 'string',\n     })\n"
+                },
+                {
+                    "date": 1643668297272,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,9 @@\n       job_title: 'string',\n       photo_url: 'string',\n     })\n     expect(res.status).toBe(200)\n-    expect(res.body).toEqual({ isCorrect: true })\n+    expect(res.body).toEqual(OK)\n     done()\n   })\n \n   test('should return false if provided with incorrect answer and question', async done => {\n"
+                },
+                {
+                    "date": 1643668309127,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,40 +13,5 @@\n     expect(res.status).toBe(200)\n     expect(res.body).toEqual(OK)\n     done()\n   })\n-\n-  test('should return false if provided with incorrect answer and question', async done => {\n-    const res = await request.post('/responses/verify').send({\n-      questionId: 194983,\n-      userAnswer: 'pork',\n-    })\n-    expect(res.status).toBe(200)\n-    expect(res.body).toEqual({ isCorrect: false })\n-    done()\n-  })\n-\n-  test('should return error code if user answer isnt in question', async done => {\n-    const res = await request.post('/responses/verify').send({\n-      questionId: 194983,\n-      userAnswer: 'not_an_option',\n-    })\n-    expect(res.status).toBe(400)\n-    done()\n-  })\n-\n-  test('should return error code if question is missing', async done => {\n-    const res = await request.post('/responses/verify').send({\n-      userAnswer: 'some_answer',\n-    })\n-    expect(res.status).toBe(400)\n-    done()\n-  })\n-\n-  test('should return error code if userAnswer is missing', async done => {\n-    const res = await request.post('/responses/verify').send({\n-      questionId: 194983,\n-    })\n-    expect(res.status).toBe(400)\n-    done()\n-  })\n })\n"
+                },
+                {
+                    "date": 1643669141275,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,6 @@\n import supertest from 'supertest'\n-import app from '../index'\n \n-const request = supertest(app)\n-\n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async done => {\n     const res = await request.put('/api/account/profile').send({\n       name: 'string',\n"
+                },
+                {
+                    "date": 1643669301266,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,6 @@\n-import supertest from 'supertest'\n-\n describe('E2E Tests (Check Against Rules Middleware)', () => {\n-  test('should return OK if payload is correct', async done => {\n+  test('should return OK if payload is correct', async => {\n     const res = await request.put('/api/account/profile').send({\n       name: 'string',\n       job_title: 'string',\n       photo_url: 'string',\n"
+                },
+                {
+                    "date": 1643669331450,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,7 +6,6 @@\n       photo_url: 'string',\n     })\n     expect(res.status).toBe(200)\n     expect(res.body).toEqual(OK)\n-    done()\n   })\n })\n"
+                },
+                {
+                    "date": 1643669368040,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n describe('E2E Tests (Check Against Rules Middleware)', () => {\n-  test('should return OK if payload is correct', async => {\n+  test('should return OK if payload is correct', async () => {\n     const res = await request.put('/api/account/profile').send({\n       name: 'string',\n       job_title: 'string',\n       photo_url: 'string',\n"
+                },
+                {
+                    "date": 1643669430812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,9 @@\n+import supertest from 'supertest'\n+import app from '../index'\n+\n+const request = supertest(app)\n+\n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async () => {\n     const res = await request.put('/api/account/profile').send({\n       name: 'string',\n"
+                },
+                {
+                    "date": 1643669437947,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import supertest from 'supertest'\n-import app from '../index'\n+import app from '../'\n \n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n"
+                },
+                {
+                    "date": 1643669512561,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,19 @@\n import supertest from 'supertest'\n-import app from '../'\n+import app from '../app'\n \n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async () => {\n-    const res = await request.put('/api/account/profile').send({\n-      name: 'string',\n-      job_title: 'string',\n-      photo_url: 'string',\n-    })\n+    const res = await request\n+      .put('/api/account/profile')\n+      .set('Content-Type', 'application/json')\n+      .send({\n+        name: 'string',\n+        job_title: 'string',\n+        photo_url: 'string',\n+      })\n     expect(res.status).toBe(200)\n     expect(res.body).toEqual(OK)\n   })\n })\n"
+                },
+                {
+                    "date": 1643669539990,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,7 +13,7 @@\n         job_title: 'string',\n         photo_url: 'string',\n       })\n     expect(res.status).toBe(200)\n-    expect(res.body).toEqual(OK)\n+    expect(res.body).toEqual('OK')\n   })\n })\n"
+                },
+                {
+                    "date": 1643669559686,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async () => {\n+    console.log(req)\n     const res = await request\n       .put('/api/account/profile')\n       .set('Content-Type', 'application/json')\n       .send({\n"
+                },
+                {
+                    "date": 1643669653527,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,17 +4,18 @@\n const request = supertest(app)\n \n describe('E2E Tests (Check Against Rules Middleware)', () => {\n   test('should return OK if payload is correct', async () => {\n-    console.log(req)\n+    console.log(request)\n     const res = await request\n       .put('/api/account/profile')\n       .set('Content-Type', 'application/json')\n       .send({\n         name: 'string',\n         job_title: 'string',\n         photo_url: 'string',\n       })\n+      .expect(200)\n     expect(res.status).toBe(200)\n     expect(res.body).toEqual('OK')\n   })\n })\n"
+                },
+                {
+                    "date": 1643670023557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,8 +14,23 @@\n         job_title: 'string',\n         photo_url: 'string',\n       })\n       .expect(200)\n-    expect(res.status).toBe(200)\n+\n     expect(res.body).toEqual('OK')\n   })\n+\n+  test('should return OK if payload is correct', async () => {\n+    console.log(request)\n+    const res = await request\n+      .put('/api/account/profile')\n+      .set('Content-Type', 'application/json')\n+      .send({\n+        name: 'string',\n+        job_title: 'string',\n+        photo_url: 'string',\n+      })\n+      .expect(200)\n+\n+    expect(res.body).toEqual('OK')\n+  })\n })\n"
+                },
+                {
+                    "date": 1643670031910,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,9 +26,8 @@\n       .set('Content-Type', 'application/json')\n       .send({\n         name: 'string',\n         job_title: 'string',\n-        photo_url: 'string',\n       })\n       .expect(200)\n \n     expect(res.body).toEqual('OK')\n"
+                },
+                {
+                    "date": 1643670053085,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n \n     expect(res.body).toEqual('OK')\n   })\n \n-  test('should return OK if payload is correct', async () => {\n+  test('should return error if payload is correct', async () => {\n     console.log(request)\n     const res = await request\n       .put('/api/account/profile')\n       .set('Content-Type', 'application/json')\n"
+                },
+                {
+                    "date": 1643670065094,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n \n     expect(res.body).toEqual('OK')\n   })\n \n-  test('should return error if payload is correct', async () => {\n+  test('should return error if payload does not include all ', async () => {\n     console.log(request)\n     const res = await request\n       .put('/api/account/profile')\n       .set('Content-Type', 'application/json')\n"
+                },
+                {
+                    "date": 1643670073189,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n \n     expect(res.body).toEqual('OK')\n   })\n \n-  test('should return error if payload does not include all the param', async () => {\n+  test('should return error if payload does not include all the parame', async () => {\n     console.log(request)\n     const res = await request\n       .put('/api/account/profile')\n       .set('Content-Type', 'application/json')\n"
+                },
+                {
+                    "date": 1643707582594,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,9 +28,9 @@\n         job_title: 'string',\n       })\n       .expect(400)\n \n-    expect(text)\n+    expect(text).\n     assert.include(text, 'All required parameters should be present')\n     assert.include(text, 'no extraneous parameters should be passed')\n   })\n \n"
+                }
+            ],
+            "date": 1643668161484,
+            "name": "Commit-0",
+            "content": "import { getOne, getMany, getRandom } from './questions.service'\nimport { mockQuestions, mockQuestionsBlind } from './questions.mock'\nimport { removeResultInfo } from './questions.utils'\n\njest.mock('./questions.store', () => ({\n  getQuestions: jest.fn(() => mockQuestions),\n}))\n\ndescribe('Questions Module', () => {\n  describe('getOne', () => {\n    test('should return the first question', () => {\n      expect(getOne(1)).toEqual(mockQuestionsBlind[0])\n    })\n\n    test('should throw an error if question does not exist', () => {\n      expect(() => getOne(5)).toThrowError()\n    })\n  })\n\n  describe('getMany', () => {\n    test('should return all the questions', () => {\n      expect(getMany()).toEqual(mockQuestionsBlind)\n    })\n  })\n\n  describe('getRandom', () => {\n    test('should return one question that exists in the store', () => {\n      const randomQuestion = getRandom()\n      expect(mockQuestionsBlind.find(q => q.id === randomQuestion.id)).toEqual(\n        randomQuestion\n      )\n    })\n  })\n})\n\ndescribe('Questions Utils', () => {\n  test('removeResultInfo', () => {\n    expect(removeResultInfo(mockQuestions[0])).toEqual(mockQuestionsBlind[0])\n  })\n})\n"
+        }
+    ]
+}

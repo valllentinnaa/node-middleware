@@ -1,0 +1,38 @@
+{
+    "sourceFile": "babel.config.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1643669088960,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643669215256,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,3 +1,7 @@\n {\n-  \"presets\": [\"@babel/preset-env\"]\n+  \"presets\": [\"@babel/preset-env\"],\n+  {\n+        targets: {\n+          node: 'current',\n+        },\n }\n"
+                },
+                {
+                    "date": 1643669222709,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n {\n   \"presets\": [\"@babel/preset-env\"],\n   {\n-        targets: {\n-          node: 'current',\n+        \"targets\": {\n+          \"node\": 'current',\n         },\n }\n"
+                },
+                {
+                    "date": 1643669233363,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n {\n   \"presets\": [\"@babel/preset-env\"],\n   {\n-        \"targets\": {\n-          \"node\": 'current',\n+    \"targets\": {\n+          \"node\": \"current\",\n         },\n }\n"
+                },
+                {
+                    "date": 1643669261914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n {\n   \"presets\": [\"@babel/preset-env\"],\n-  {\n-    \"targets\": {\n+  { \"targets\": {\n           \"node\": \"current\",\n         },\n }\n"
+                },
+                {
+                    "date": 1643669270426,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,12 @@\n-{\n-  \"presets\": [\"@babel/preset-env\"],\n-  { \"targets\": {\n-          \"node\": \"current\",\n+module.exports = {\n+  presets: [\n+    [\n+      '@babel/preset-env',\n+      {\n+        targets: {\n+          node: 'current',\n         },\n-}\n+      },\n+    ],\n+  ],\n+};\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1643669088960,
+            "name": "Commit-0",
+            "content": "{\n  \"presets\": [\"@babel/preset-env\"]\n}\n"
+        }
+    ]
+}

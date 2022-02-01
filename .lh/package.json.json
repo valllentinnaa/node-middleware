@@ -1,0 +1,34 @@
+{
+    "sourceFile": "package.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1643668337758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643668684351,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,6 +23,12 @@\n   \"devDependencies\": {\n     \"jest\": \"^27.4.7\",\n     \"nodemon\": \"^1.11.0\",\n     \"supertest\": \"^6.2.2\"\n+  },\n+  \"jest\": {\n+    \"testEnvironment\": \"node\",\n+    \"coveragePathIgnorePatterns\": [\n+      \"/node_modules/\"\n+    ]\n   }\n }\n"
+                },
+                {
+                    "date": 1643668698705,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n   \"version\": \"1.0.0\",\n   \"description\": \"An opinionated microservice framework for quick bootstrapping of code\",\n   \"scripts\": {\n     \"start\": \"nodemon -r esm lib/app.js\",\n-    \"test\": \"NODE_ENV=test jest --runInBand --forceExit --detectOpenHandles\"\n+    \"test\": \"jest\"\n   },\n   \"author\": \"cohire/lacunadream\",\n   \"dependencies\": {\n     \"axios\": \"^0.19.1\",\n"
+                },
+                {
+                    "date": 1643669047622,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,15 +20,20 @@\n     \"swagger-jsdoc\": \"^1.9.7\",\n     \"winston\": \"^2.4.0\"\n   },\n   \"devDependencies\": {\n+    \"@babel/preset-env\": \"^7.16.11\",\n+    \"babel-jest\": \"^27.4.6\",\n     \"jest\": \"^27.4.7\",\n     \"nodemon\": \"^1.11.0\",\n     \"supertest\": \"^6.2.2\"\n   },\n   \"jest\": {\n     \"testEnvironment\": \"node\",\n     \"coveragePathIgnorePatterns\": [\n       \"/node_modules/\"\n-    ]\n+    ],\n+    \"transform\": {\n+      \"^.+\\\\.jsx?$\": \"babel-jest\"\n+    }\n   }\n }\n"
+                },
+                {
+                    "date": 1643669602484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n   \"version\": \"1.0.0\",\n   \"description\": \"An opinionated microservice framework for quick bootstrapping of code\",\n   \"scripts\": {\n     \"start\": \"nodemon -r esm lib/app.js\",\n-    \"test\": \"jest\"\n+    \"test\": \"jest --runInBand --forceExit --detectOpenHandles\"\n   },\n   \"author\": \"cohire/lacunadream\",\n   \"dependencies\": {\n     \"axios\": \"^0.19.1\",\n"
+                }
+            ],
+            "date": 1643668337758,
+            "name": "Commit-0",
+            "content": "{\n  \"name\": \"microservice-bootstrap\",\n  \"version\": \"1.0.0\",\n  \"description\": \"An opinionated microservice framework for quick bootstrapping of code\",\n  \"scripts\": {\n    \"start\": \"nodemon -r esm lib/app.js\",\n    \"test\": \"NODE_ENV=test jest --runInBand --forceExit --detectOpenHandles\"\n  },\n  \"author\": \"cohire/lacunadream\",\n  \"dependencies\": {\n    \"axios\": \"^0.19.1\",\n    \"body-parser\": \"^1.15.2\",\n    \"config\": \"^3.2.4\",\n    \"dateformat\": \"^3.0.3\",\n    \"esm\": \"^3.2.25\",\n    \"express\": \"^4.14.0\",\n    \"express-jwt\": \"^5.3.0\",\n    \"express-winston\": \"^2.4.0\",\n    \"js-yaml\": \"^3.8.3\",\n    \"swagger-jsdoc\": \"^1.9.7\",\n    \"winston\": \"^2.4.0\"\n  },\n  \"devDependencies\": {\n    \"jest\": \"^27.4.7\",\n    \"nodemon\": \"^1.11.0\",\n    \"supertest\": \"^6.2.2\"\n  }\n}\n"
+        }
+    ]
+}

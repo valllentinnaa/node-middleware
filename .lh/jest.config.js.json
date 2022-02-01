@@ -1,0 +1,30 @@
+{
+    "sourceFile": "jest.config.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1643668457837,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1643668465159,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n module.exports = {\n   roots: ['<rootDir>/src'],\n   testMatch: [\n     '**/__tests__/**/*.+(ts|tsx|js)',\n-    '**/?(*.)+(spec|test).+(ts|tsx|js)',\n+    '**/?(*.)+(spec|test).+(js)',\n   ],\n   transform: {\n     '^.+\\\\.(ts|tsx)$': 'ts-jest',\n   },\n"
+                },
+                {
+                    "date": 1643668472871,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,7 @@\n module.exports = {\n   roots: ['<rootDir>/src'],\n   testMatch: [\n-    '**/__tests__/**/*.+(ts|tsx|js)',\n+    '**/__tests__/**/*.+(js)',\n     '**/?(*.)+(spec|test).+(js)',\n   ],\n-  transform: {\n-    '^.+\\\\.(ts|tsx)$': 'ts-jest',\n-  },\n }\n"
+                },
+                {
+                    "date": 1643668484282,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,4 @@\n module.exports = {\n-  roots: ['<rootDir>/src'],\n-  testMatch: [\n-    '**/__tests__/**/*.+(js)',\n-    '**/?(*.)+(spec|test).+(js)',\n-  ],\n+  roots: ['<rootDir>/lib'],\n+  testMatch: ['**/__tests__/**/*.+(js)', '**/?(*.)+(spec|test).+(js)'],\n }\n"
+                }
+            ],
+            "date": 1643668457837,
+            "name": "Commit-0",
+            "content": "module.exports = {\n  roots: ['<rootDir>/src'],\n  testMatch: [\n    '**/__tests__/**/*.+(ts|tsx|js)',\n    '**/?(*.)+(spec|test).+(ts|tsx|js)',\n  ],\n  transform: {\n    '^.+\\\\.(ts|tsx)$': 'ts-jest',\n  },\n}\n"
+        }
+    ]
+}
